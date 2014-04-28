@@ -1,0 +1,21 @@
+doctype html
+html
+  head
+    title Machi
+    script(type='text/javascript',src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js')
+    script(type='application/javascript',src='//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js')
+    script(type='text/javascript',src='//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js')
+    script(src="/socket.io/socket.io.js")
+    script(src="http://maps.google.com/maps/api/js?sensor=false")
+    script(type='text/javascript',src='/js/room.js')
+  body
+    h1 Machi
+    div NAME
+    input(id="username",type="text")
+    div AIKOTOBA
+    input(id="aikotoba",type="text")
+    input(id="join",type="submit",value="join")
+    input(id="update",type="submit",value="update")
+    div(id="roomname") Room Name
+    div(id="userinfo") User Info
+    div(id="map_canvas",style="width:500px;height:500px")
