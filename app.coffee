@@ -8,7 +8,7 @@ app.use express.static(__dirname + '/public')
 
 
 app.get "/" ,(req,res)->
-  res.render "index"
+    res.render "index"
 
 server = app.listen 3000
 io = io.listen server
