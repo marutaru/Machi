@@ -1,13 +1,17 @@
 $ ->
+
+  # initialize
   lat = 35
   long = 140
   roomname = null
   map = null
+  makerManager = []
   navigator.geolocation.getCurrentPosition (position) ->
     lat = position.coords.latitude
     long = position.coords.longitude
   ,(error) ->
     console.log error
+  $("#update").hide()
 
   # socket connect
   socket = io.connect "http://localhost:3000"
@@ -25,8 +29,9 @@ $ ->
     marker = new google.maps.Marker
       "position":latlng
       "map":map
-
     socket.emit "enter", info
+    $(this).hide()
+    $("#update").show()
 
   # map init
   init = () ->
