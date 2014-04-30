@@ -1,16 +1,24 @@
 $ ->
 
   # initialize
-  lat = 35
+  lat = 41
   long = 140
-  roomname = null
+  roomName = null
   map = null
   makerManager = []
+  myMarker = null
+
+  # geolocation
+  ###
   navigator.geolocation.getCurrentPosition (position) ->
     lat = position.coords.latitude
     long = position.coords.longitude
+    $("#lat").val(lat)
+    $("#long").val(long)
   ,(error) ->
     console.log error
+  ###
+
   $("#update").hide()
 
   # socket connect
@@ -18,6 +26,8 @@ $ ->
 
   # join button
   $("#join").click (event) ->
+    lat = $("#lat").val()
+    long = $("#long").val()
     info =
       "name":$("#username").val()
       "aikotoba":$("#aikotoba").val()
@@ -26,7 +36,7 @@ $ ->
     console.log "click"+info.name
     init()
     latlng = new google.maps.LatLng lat,long
-    marker = new google.maps.Marker
+    myMarker = new google.maps.Marker
       "position":latlng
       "map":map
     socket.emit "enter", info
@@ -36,8 +46,8 @@ $ ->
   # map init
   init = () ->
     myOptions =
-      "center": new google.maps.LatLng(lat,long)
-      "zoom":15
+      "center": new google.maps.LatLng lat,long
+      "zoom":12
       "mapTypeId": google.maps.MapTypeId.ROADMAP
     map = new google.maps.Map $("#map_canvas").get(0),myOptions
     console.log "maps init"
@@ -45,15 +55,20 @@ $ ->
   # update button
   $("#update").click (event) ->
     console.log "update"
+    lat = $("#lat").val()
+    long = $("#long").val()
     info =
       "name":$("#username").val()
       "aikotoba":$("#aikotoba").val()
       "lat":lat
       "long":long
+    latlng = new google.maps.LatLng lat,long
+    myMarker.position = latlng
+    myMarker.setMap map
     socket.emit "update",info
 
   # data update
   socket.on "data", (data) ->
-    roomname = data.aikotoba
+    roomName = data.aikotoba
     $("#roomname").append "<div>"+data.aikotoba+"</div>"
     $("#userinfo").append "<div>"+data.name+"</div>"+"<div>"+data.lat+"</div>"+"<div>"+data.long+"</div>"

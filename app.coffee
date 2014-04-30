@@ -19,4 +19,6 @@ io.sockets.on "connection",(socket)->
     socket.emit "data",data
     socket.join data.aikotoba
   socket.on "update",(data) ->
+    console.log data
     socket.broadcast.to(data.aikotoba).emit "data",data
+
