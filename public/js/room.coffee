@@ -1,12 +1,14 @@
 $ ->
 
   # initialize
+  # global
   lat = 41
   long = 140
   roomName = null
   map = null
   makerManager = []
   myMarker = null
+  $("#update").hide()
 
   # geolocation
   ###
@@ -19,8 +21,6 @@ $ ->
     console.log error
   ###
 
-  $("#update").hide()
-
   # socket connect
   socket = io.connect "http://localhost:3000"
 
@@ -28,29 +28,32 @@ $ ->
   $("#join").click (event) ->
     lat = $("#lat").val()
     long = $("#long").val()
-    info =
-      "name":$("#username").val()
+    name = $("#username").val()
+    my =
+      "name":name
       "aikotoba":$("#aikotoba").val()
       "lat":lat
       "long":long
-    console.log "click"+info.name
-    init()
+    console.log "click"+my.name
+    mapInit()
     latlng = new google.maps.LatLng lat,long
     myMarker = new google.maps.Marker
       "position":latlng
       "map":map
-    socket.emit "enter", info
+      "title":name
+    socket.emit "enter",my
+    # button change
     $(this).hide()
     $("#update").show()
 
   # map init
-  init = () ->
-    myOptions =
+  mapInit = () ->
+    option =
       "center": new google.maps.LatLng lat,long
-      "zoom":12
+      "zoom":10
       "mapTypeId": google.maps.MapTypeId.ROADMAP
-    map = new google.maps.Map $("#map_canvas").get(0),myOptions
-    console.log "maps init"
+    map = new google.maps.Map $("#map_canvas").get(0),option
+    console.log "initilized maps"
 
   # update button
   $("#update").click (event) ->
@@ -62,13 +65,24 @@ $ ->
       "aikotoba":$("#aikotoba").val()
       "lat":lat
       "long":long
-    latlng = new google.maps.LatLng lat,long
-    myMarker.position = latlng
-    myMarker.setMap map
+    moveMarker(info,myMarker)
     socket.emit "update",info
 
   # data update
   socket.on "data", (data) ->
     roomName = data.aikotoba
-    $("#roomname").append "<div>"+data.aikotoba+"</div>"
-    $("#userinfo").append "<div>"+data.name+"</div>"+"<div>"+data.lat+"</div>"+"<div>"+data.long+"</div>"
+    latlng = new google.maps.LatLng data.lat,data.long
+    newMarker(data)
+
+  # make Marker
+  newMarker = (data) ->
+    latlng = new google.maps.LatLng data.lat,data.long
+    marker = new google.maps.Marker
+      "position":latlng
+      "map":map
+      "title":data.name
+  # move Marker
+  moveMarker = (data,marker) ->
+    latlng = new google.maps.LatLng data.lat,data.long
+    marker.position = latlng
+    marker.setMap map

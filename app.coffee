@@ -21,4 +21,5 @@ io.sockets.on "connection",(socket)->
   socket.on "update",(data) ->
     console.log data
     socket.broadcast.to(data.aikotoba).emit "data",data
-
+  socket.on "disconnect",()->
+    console.log "disconnected"
