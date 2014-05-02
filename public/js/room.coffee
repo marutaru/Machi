@@ -1,12 +1,13 @@
 $ ->
 
+  #
   # initialize
-  # global
-  lat = 41
-  long = 140
+  #
+  lat = null
+  long = null
   roomName = null
   map = null
-  makerManager = []
+  markerManager = []
   myMarker = null
   $("#update").hide()
 
@@ -23,6 +24,15 @@ $ ->
 
   # socket connect
   socket = io.connect "http://localhost:3000"
+
+  # map init
+  mapInit = () ->
+    option =
+      "center": new google.maps.LatLng lat,long
+      "zoom":9
+      "mapTypeId": google.maps.MapTypeId.ROADMAP
+    map = new google.maps.Map $("#map_canvas").get(0),option
+    console.log "initilized maps"
 
   # join button
   $("#join").click (event) ->
@@ -41,19 +51,10 @@ $ ->
       "position":latlng
       "map":map
       "title":name
-    socket.emit "enter",my
+    socket.emit "join",my
     # button change
     $(this).hide()
     $("#update").show()
-
-  # map init
-  mapInit = () ->
-    option =
-      "center": new google.maps.LatLng lat,long
-      "zoom":10
-      "mapTypeId": google.maps.MapTypeId.ROADMAP
-    map = new google.maps.Map $("#map_canvas").get(0),option
-    console.log "initilized maps"
 
   # update button
   $("#update").click (event) ->
@@ -70,9 +71,23 @@ $ ->
 
   # data update
   socket.on "data", (data) ->
+    console.log "data update"
     roomName = data.aikotoba
     latlng = new google.maps.LatLng data.lat,data.long
-    newMarker(data)
+    if oldMarker = _.findWhere(markerManager,"title":data.name)
+      moveMarker(data,oldMarker)
+    else
+      newMarker(data)
+      info =
+        "name":$("#username").val()
+        "aikotoba":$("#aikotoba").val()
+        "lat":lat
+        "long":long
+      socket.emit "update",info
+
+  #
+  # functions
+  #
 
   # make Marker
   newMarker = (data) ->
@@ -81,8 +96,10 @@ $ ->
       "position":latlng
       "map":map
       "title":data.name
+    markerManager.push marker
   # move Marker
   moveMarker = (data,marker) ->
+    console.log "moveMarker"
     latlng = new google.maps.LatLng data.lat,data.long
     marker.position = latlng
     marker.setMap map

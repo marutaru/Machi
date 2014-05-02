@@ -14,10 +14,10 @@ server = app.listen 3000
 io = io.listen server
 io.sockets.on "connection",(socket)->
   console.log "connected"
-  socket.on "enter", (data) ->
+  socket.on "join", (data) ->
     console.log data
-    socket.emit "data",data
     socket.join data.aikotoba
+    socket.broadcast.to(data.aikotoba).emit "data",data
   socket.on "update",(data) ->
     console.log data
     socket.broadcast.to(data.aikotoba).emit "data",data
