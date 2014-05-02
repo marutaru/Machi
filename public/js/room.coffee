@@ -9,9 +9,14 @@ $ ->
   map = null
   markerManager = []
   myMarker = null
+  flag = false
   $("#update").hide()
 
   # geolocation
+  opt =
+    enableHighAccuracy:true
+    timeout:10000
+    maximumAge:0
   navigator.geolocation.watchPosition (position) ->
     lat = position.coords.latitude
     long = position.coords.longitude
@@ -22,11 +27,12 @@ $ ->
       "aikotoba":$("#aikotoba").val()
       "lat":lat
       "long":long
-    moveMarker(info,myMarker)
-    socket.emit "update",info
-
+    if flag is true
+      moveMarker(info,myMarker)
+      socket.emit "update",info
   ,(error) ->
     console.log error
+  ,(opt)
 
   # socket connect
   socket = io.connect "http://localhost:3000"
@@ -35,13 +41,14 @@ $ ->
   mapInit = () ->
     option =
       "center": new google.maps.LatLng lat,long
-      "zoom":10
+      "zoom":12
       "mapTypeId": google.maps.MapTypeId.ROADMAP
     map = new google.maps.Map $("#map_canvas").get(0),option
     console.log "initilized maps"
 
   # join button
   $("#join").click (event) ->
+    flag = true
     lat = $("#lat").val()
     long = $("#long").val()
     name = $("#username").val()
@@ -107,6 +114,7 @@ $ ->
   # move Marker
   moveMarker = (data,marker) ->
     console.log "moveMarker"
+    console.log marker
     latlng = new google.maps.LatLng data.lat,data.long
     marker.position = latlng
     marker.setMap map
