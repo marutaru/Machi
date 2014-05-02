@@ -9,22 +9,29 @@
     markerManager = [];
     myMarker = null;
     $("#update").hide();
-
-    /*
-    navigator.geolocation.getCurrentPosition (position) ->
-      lat = position.coords.latitude
-      long = position.coords.longitude
-      $("#lat").val(lat)
-      $("#long").val(long)
-    ,(error) ->
-      console.log error
-     */
+    navigator.geolocation.watchPosition(function(position) {
+      var info;
+      lat = position.coords.latitude;
+      long = position.coords.longitude;
+      $("#lat").val(lat);
+      $("#long").val(long);
+      info = {
+        "name": $("#username").val(),
+        "aikotoba": $("#aikotoba").val(),
+        "lat": lat,
+        "long": long
+      };
+      moveMarker(info, myMarker);
+      return socket.emit("update", info);
+    }, function(error) {
+      return console.log(error);
+    });
     socket = io.connect("http://localhost:3000");
     mapInit = function() {
       var option;
       option = {
         "center": new google.maps.LatLng(lat, long),
-        "zoom": 9,
+        "zoom": 10,
         "mapTypeId": google.maps.MapTypeId.ROADMAP
       };
       map = new google.maps.Map($("#map_canvas").get(0), option);

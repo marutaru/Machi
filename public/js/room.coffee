@@ -12,15 +12,21 @@ $ ->
   $("#update").hide()
 
   # geolocation
-  ###
-  navigator.geolocation.getCurrentPosition (position) ->
+  navigator.geolocation.watchPosition (position) ->
     lat = position.coords.latitude
     long = position.coords.longitude
     $("#lat").val(lat)
     $("#long").val(long)
+    info =
+      "name":$("#username").val()
+      "aikotoba":$("#aikotoba").val()
+      "lat":lat
+      "long":long
+    moveMarker(info,myMarker)
+    socket.emit "update",info
+
   ,(error) ->
     console.log error
-  ###
 
   # socket connect
   socket = io.connect "http://localhost:3000"
@@ -29,7 +35,7 @@ $ ->
   mapInit = () ->
     option =
       "center": new google.maps.LatLng lat,long
-      "zoom":9
+      "zoom":10
       "mapTypeId": google.maps.MapTypeId.ROADMAP
     map = new google.maps.Map $("#map_canvas").get(0),option
     console.log "initilized maps"
@@ -57,6 +63,7 @@ $ ->
     $("#update").show()
 
   # update button
+  # @todo delte
   $("#update").click (event) ->
     console.log "update"
     lat = $("#lat").val()
