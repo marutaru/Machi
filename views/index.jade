@@ -11,12 +11,28 @@ html
     script(type='text/javascript',src='//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js')
     link(rel='stylesheet',href='//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/css/bootstrap.min.css')
   body
-    h1.page-header Machi
-    input.form-control#username(type="text",placeholder="Username")
-    input.form-control#aikotoba(type="text",placeholder="AIKOTOBA")
-    input.form-control#lat(type="text",value=36,placeholder="latitude")
-    input.form-control#long(type="text",value=139,placeholder="longitude")
-    input.btn.btn-primary#join(type="submit",value="join")
-    input.btn.btn-primary#update(type="submit",value="update")
-    div#map_canvas(style="width:500px;height:500px")
-    #others
+    h1.page-header 待ち合わせ
+      .small for WEB
+    #content
+      .container_fluid
+        .row
+          .col-md-8.col-md-offset-2.col-xs-12
+            input.form-control#username(type="text",placeholder="Username")
+        .row
+          .col-md-8.col-md-offset-2.col-xs-12
+            input.form-control#aikotoba(type="text",placeholder="AIKOTOBA")
+        .row
+          .col-md-8.col-md-offset-2.col-xs-12
+            input.form-control#lat(type="text",value=36,placeholder="latitude")
+        .row
+          .col-md-8.col-md-offset-2.col-xs-12
+            input.form-control#long(type="text",value=139,placeholder="longitude")
+        .row
+          .col-md-8.col-md-offset-2.col-xs-12
+            input.btn.btn-primary#join(type="submit",value="join")
+        .row
+          .col-md-8.col-md-offset-2.col-xs-12
+            input.btn.btn-primary#update(type="submit",value="update")
+        .row
+          .col-md-8.col-md-offset-2.col-xs-12
+            div#map_canvas(style="width:500px;height:500px")
