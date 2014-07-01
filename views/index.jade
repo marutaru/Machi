@@ -11,10 +11,11 @@ html
     script(type='text/javascript',src='//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js')
     link(rel='stylesheet',href='//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/css/bootstrap.min.css')
   body
-    h1.page-header 待ち合わせ
-      .small for WEB
     #content
       .container_fluid
+        .row
+          h1.page-header.col-md-offset-2 待ち合わせ
+            .small for WEB
         .row
           .col-md-8.col-md-offset-2.col-xs-12
             input.form-control#username(type="text",placeholder="Username")
