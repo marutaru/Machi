@@ -1,7 +1,7 @@
 doctype html
 html
   head
-    title Machi
+    title 待ち合わせ
     script(type='text/javascript',src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.min.js')
     script(type='application/javascript',src='//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js')
     script(type='text/javascript',src='//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js')
@@ -17,16 +17,20 @@ html
           h1.page-header.col-md-8.col-md-offset-2.col-xs-12 待ち合わせ
             .small for WEB
         .row
-          .col-md-8.col-md-offset-2.col-xs-12
+          .input-group.col-md-8.col-md-offset-2.col-xs-12
+            span.input-group-addon NAME
             input.form-control#username(type="text",placeholder="Username")
         .row
-          .col-md-8.col-md-offset-2.col-xs-12
-            input.form-control#aikotoba(type="text",placeholder="AIKOTOBA")
+          .input-group.col-md-8.col-md-offset-2.col-xs-12
+            span.input-group-addon PASS
+            input.form-control#aikotoba(type="text",placeholder="PASS")
         .row
-          .col-md-8.col-md-offset-2.col-xs-12
+          .input-group.col-md-8.col-md-offset-2.col-xs-12
+            span.input-group-addon Latitude
             input.form-control#lat(type="text",value=36,placeholder="latitude")
         .row
-          .col-md-8.col-md-offset-2.col-xs-12
+          .input-group.col-md-8.col-md-offset-2.col-xs-12
+            span.input-group-addon Longitude
             input.form-control#long(type="text",value=139,placeholder="longitude")
         .row
           .col-md-8.col-md-offset-2.col-xs-12
